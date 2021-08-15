@@ -5,17 +5,17 @@ const Airtable = require("airtable");
 
 const base = new Airtable({ apiKey: API_KEY }).base("app8ZbcPx7dkpOnP0");
 
-base("Classes")
+base("Students")
   .select({
     // Selecting the first 3 records in Grid view:
     maxRecords: 20,
     view: "Grid view",
   })
   .eachPage(
-    function page(records, fetchNextPage) {
+    function page(records: any, fetchNextPage: Function) {
       // This function (`page`) will get called for each page of records.
 
-      records.forEach(function (record) {
+      records.forEach(function (record: any) {
         console.log("Retrieved", record.get("Name"));
       });
 
@@ -24,7 +24,7 @@ base("Classes")
       // If there are no more records, `done` will get called.
       fetchNextPage();
     },
-    function done(err) {
+    function done(err: string) {
       if (err) {
         console.error(err);
         return;

@@ -1,15 +1,15 @@
 import { UPDATE_CURRENT_STUDENT } from "./actions";
 
 const initialState = {
-  currentStudent: {},
+  currentStudent: "",
 };
 
-export const reducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case UPDATE_CURRENT_STUDENT:
       return {
         ...state,
-        currentBook: { ...action.currentBook },
+        currentStudent: action.currentStudent,
       };
     default:
       return state;
