@@ -47,7 +47,8 @@
   },
   "react-dotenv": {
     "whitelist": [
-      "API_KEY"
+      "API_KEY",
+      "BASE_KEY"
     ]
   }
 }

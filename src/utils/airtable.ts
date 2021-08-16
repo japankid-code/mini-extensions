@@ -1,35 +1,43 @@
 import env from "react-dotenv";
+import React from "react";
+
+import Airtable from "airtable";
 const API_KEY = env.API_KEY;
+const BASE_KEY = env.BASE_KEY;
+console.log(BASE_KEY);
 
-const Airtable = require("airtable");
+const base = new Airtable({ apiKey: API_KEY }).base(BASE_KEY);
 
-const base = new Airtable({ apiKey: API_KEY }).base("app8ZbcPx7dkpOnP0");
-
-base("Students")
-  .select({
-    // Selecting the first 3 records in Grid view:
-    maxRecords: 20,
-    view: "Grid view",
-  })
-  .eachPage(
-    function page(records: any, fetchNextPage: Function) {
-      // This function (`page`) will get called for each page of records.
-
-      records.forEach(function (record: any) {
-        console.log("Retrieved", record.get("Name"));
-      });
-
-      // To fetch the next page of records, call `fetchNextPage`.
-      // If there are more records, `page` will get called again.
-      // If there are no more records, `done` will get called.
-      fetchNextPage();
-    },
-    function done(err: string) {
+export default function SearchStudents(name: string): object {
+  let student: object = {};
+  console.log("searching students...");
+  base("Students")
+    .select({
+      // Selecting the first 3 records in Grid view:
+      filterByFormula: `name = {name}`,
+      view: "Grid view",
+    })
+    .firstPage(function page(err: any, records: any) {
       if (err) {
         console.error(err);
         return;
       }
-    }
-  );
+      // This function (`page`) will get called for each page of records.
+      records.forEach(function (record: any) {
+        student = {
+          id: record.id,
+          name: record.get("Name"),
+          classes: record.get("Classes"),
+        };
 
-export default base;
+        console.log(
+          "Retrieved student",
+          record.id,
+          record.get("Name"),
+          record.get("Classes")
+        );
+      });
+    });
+
+  return student;
+}
