@@ -14,7 +14,7 @@ export default function SearchStudents(name: string): object {
   base("Students")
     .select({
       // Selecting the first 3 records in Grid view:
-      filterByFormula: `name = {name}`,
+      filterByFormula: `{Name} = ${name}`,
       view: "Grid view",
     })
     .firstPage(function page(err: any, records: any) {
